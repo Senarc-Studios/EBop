@@ -34,10 +34,10 @@ class EBop(AutoSharededBot):
 				try:
 					await self.bot.load_extension(f"extensions.{name}")
 					self.LOADED_EXTENSIONS.append(name)
-					Terminal.display(f"\"{name}\" Cog Loaded.")
+					Terminal.display(f"\"{Terminal.colour(255, 255, 0)}{name}%r%\" Cog Loaded.")
 				except Exception as error:
 					self.UNLOADED_EXTENSIONS.append(name)
-					Terminal.error(f"An error occurred while loading \"{name}\" cog.")
+					Terminal.error(f"An error occurred while loading \"{Terminal.colour(255, 255, 0)}{name}%r%\" cog.")
 					print(error)
 
 		self.loop.create_task(sync_slash_commands(self))
@@ -45,3 +45,7 @@ class EBop(AutoSharededBot):
 intents = Intents.all()
 intents.members = True
 bot = EBop(prefix="eb!", case_insensitive=True, application_id=get_env("APPLICATION_ID"))
+
+@bot.listen("on_ready")
+async def startup():
+	Terminal.display(f"EBop logged in as \"{bot.user.name}\"")
