@@ -1,4 +1,5 @@
 import os
+import asyncio
 
 from discord import Intents
 from discord.commands import AutoSharededBot
@@ -6,6 +7,8 @@ from discord.commands import AutoSharededBot
 from cool_utils import GlobalJSON, Terminal
 
 from .functions import get_env, sync_slash_commands
+
+Terminal.start_log()
 
 class EBop(AutoSharededBot):
 	def __init__(self, *args, **kwargs):
@@ -18,8 +21,7 @@ class EBop(AutoSharededBot):
 		self.UNLOADED_EXTENSIONS = []
 
 	async def start(self, *args, **kwargs):
-		GlobalJSON.open('config')
-		Terminal.start_log()
+		Terminal.display("Loaded all resources, Attempting to start bot.")
 		await super().start(*args, **kwargs)
 
 	async def close(self):
@@ -49,3 +51,12 @@ bot = EBop(prefix="eb!", case_insensitive=True, application_id=get_env("APPLICAT
 @bot.listen("on_ready")
 async def startup():
 	Terminal.display(f"EBop logged in as \"{bot.user.name}\"")
+
+async def main():
+	try:
+		await bot.start(get_env("TOKEN"))
+	except Exception as error:
+		Terminal.error(error)
+
+if __name__ == "__main__":
+	asyncio.run(main())
