@@ -1,0 +1,2 @@
+cool-utils
+git+https://github.com/Rapptz/discord.py.git
