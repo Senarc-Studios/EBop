@@ -3,7 +3,7 @@ import sys
 import asyncio
 import traceback
 
-from discord import Intents
+from discord import Intents, Object
 from discord.ext.commands import Bot
 
 from pathlib import Path
@@ -18,7 +18,7 @@ Terminal.display("Initialised enviroment variables.")
 class EBop(Bot):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.CORE_GUILD = get_env("CORE_GUILD")
+		self.CORE_GUILD = Object(id = get_env("CORE_GUILD"))
 		self.EXTENSIONS = []
 		for file_ in os.listdir("./extensions"):
 			self.EXTENSIONS.append(file_[:-3])
@@ -41,10 +41,10 @@ class EBop(Bot):
 				try:
 					await self.load_extension(f"extensions.{name}")
 					self.LOADED_EXTENSIONS.append(name)
-					Terminal.display(f"\"%yellow%{name}%r%\" Cog Loaded.")
+					Terminal.display(f"Extension \"%yellow%{name}%r%\" Loaded.")
 				except Exception as error:
 					self.UNLOADED_EXTENSIONS.append(name)
-					Terminal.error(f"An error occurred while loading \"%yellow%{name}%r%\" cog.")
+					Terminal.error(f"An error occurred while loading \"%yellow%{name}%r%\" extension.")
 					display_error(error)
 
 		self.loop.create_task(sync_slash_commands(self))
