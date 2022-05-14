@@ -54,10 +54,11 @@ async def startup():
 	Terminal.display(f"EBop logged in as \"{bot.user.name}\"")
 
 async def main():
+	__filename__ = Path(__file__).name
 	try:
 		initialise_env()
 		Terminal.display("Initialised enviroment variables.")
-		#Terminal.display(f"Loaded \"{Terminal.colour(255, 255, 0)}{__file__}\"")
+		Terminal.display(f"Loaded \"{Terminal.colour(255, 255, 0)}{__filename__}%r%\"")
 		await bot.start(get_env("TOKEN"))
 	except Exception as error:
 		Terminal.error(error)
