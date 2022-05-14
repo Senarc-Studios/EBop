@@ -14,7 +14,7 @@ extensions = {
 }
 
 class Extensions:
-	def register_extensions(extension: Union[list, str]) -> None:
+	def register_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
 			extensions.update(
 				{
@@ -26,6 +26,40 @@ class Extensions:
 			extensions.update(
 				{
 					"EXTENSIONS": extensions.get("EXTENSIONS").append(extension)
+				}
+			)
+
+		return None
+
+	def register_loaded_extension(extension: Union[list, str]) -> None:
+		if isinstance(extension, list):
+			extensions.update(
+				{
+					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").extend(extension)
+				}
+			)
+
+		elif isinstance(extension, str):
+			extensions.update(
+				{
+					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").append(extension)
+				}
+			)
+
+		return None
+
+	def register_unloaded_extension(extension: Union[list, str]) -> None:
+		if isinstance(extension, list):
+			extensions.update(
+				{
+					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").extend(extension)
+				}
+			)
+
+		elif isinstance(extension, str):
+			extensions.update(
+				{
+					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").append(extension)
 				}
 			)
 
