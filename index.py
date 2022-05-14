@@ -27,7 +27,7 @@ class EBop(Bot):
 		self.CORE_GUILD = Object(id = get_env("CORE_GUILD"))
 		
 		for file_ in os.listdir("./extensions"):
-			self.Extensions.register_extension(file_[:-3])
+			Extensions.register_extension(file_[:-3])
 
 	async def start(self, *args, **kwargs):
 		Terminal.display("Loaded all resources, Starting Bot.")

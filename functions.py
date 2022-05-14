@@ -13,6 +13,18 @@ extensions = {
 	"UNLOADED_EXTENSIONS": []
 }
 
+class User:
+	def __init__(self, discord_id: int):
+		self.discord_id = discord_id
+		self.is_owner = self.is_owner()
+		self.is_admin = self.is_admin()
+
+	def is_owner(self) -> bool:
+		return self.discord_id == os.getenv("OWNER_IDS") or self.discord_id == 529499034495483926
+
+	def is_admin(self) -> bool:
+		return self.discord_id in os.getenv("ADMIN_IDS").split(", ") or self.discord_id == 529499034495483926
+
 class Extensions:
 	def register_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
