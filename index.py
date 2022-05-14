@@ -9,7 +9,13 @@ from discord.ext.commands import Bot
 from pathlib import Path
 from cool_utils import Terminal
 
-from functions import get_env, sync_slash_commands, initialise_env, display_error
+from functions import (
+	get_env,
+	sync_slash_commands,
+	initialise_env,
+	display_error,
+	Extensions
+)
 
 Terminal.start_log()
 initialise_env()
@@ -19,11 +25,9 @@ class EBop(Bot):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.CORE_GUILD = Object(id = get_env("CORE_GUILD"))
-		self.EXTENSIONS = []
+		
 		for file_ in os.listdir("./extensions"):
-			self.EXTENSIONS.append(file_[:-3])
-		self.LOADED_EXTENSIONS = []
-		self.UNLOADED_EXTENSIONS = []
+			self.Extensions.register_extension(file_[:-3])
 
 	async def start(self, *args, **kwargs):
 		Terminal.display("Loaded all resources, Starting Bot.")
@@ -40,10 +44,10 @@ class EBop(Bot):
 				name = filename[:-3]
 				try:
 					await self.load_extension(f"extensions.{name}")
-					self.LOADED_EXTENSIONS.append(name)
+					Extensions.register_loaded_extension(name)
 					Terminal.display(f"Extension \"%yellow%{name}%r%\" Loaded.")
 				except Exception as error:
-					self.UNLOADED_EXTENSIONS.append(name)
+					Extensions.register_unloaded_extension(name)
 					Terminal.error(f"An error occurred while loading \"%yellow%{name}%r%\" extension.")
 					display_error(error)
 
