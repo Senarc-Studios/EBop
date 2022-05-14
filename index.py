@@ -2,7 +2,7 @@ import os
 import asyncio
 
 from discord import Intents
-from discord.commands import AutoSharededBot
+from discord.ext.commands import AutoSharededBot
 
 from pathlib import Path
 from cool_utils import GlobalJSON, Terminal
