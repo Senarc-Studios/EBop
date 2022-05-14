@@ -4,6 +4,7 @@ import asyncio
 from discord import Intents
 from discord.commands import AutoSharededBot
 
+from pathlib import Path
 from cool_utils import GlobalJSON, Terminal
 
 from .functions import get_env, sync_slash_commands, initialise_env
@@ -21,8 +22,6 @@ class EBop(AutoSharededBot):
 		self.UNLOADED_EXTENSIONS = []
 
 	async def start(self, *args, **kwargs):
-		initialise_env()
-		Terminal.display("Initialised enviroment variables.")
 		Terminal.display("Loaded all resources, Attempting to start bot.")
 		await super().start(*args, **kwargs)
 
@@ -56,6 +55,9 @@ async def startup():
 
 async def main():
 	try:
+		initialise_env()
+		Terminal.display("Initialised enviroment variables.")
+		#Terminal.display(f"Loaded \"{Terminal.colour(255, 255, 0)}{__file__}\"")
 		await bot.start(get_env("TOKEN"))
 	except Exception as error:
 		Terminal.error(error)
