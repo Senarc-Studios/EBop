@@ -37,10 +37,10 @@ class EBop(Bot):
 				try:
 					await self.bot.load_extension(f"extensions.{name}")
 					self.LOADED_EXTENSIONS.append(name)
-					Terminal.display(f"\"{Terminal.colour(255, 255, 0)}{name}%r%\" Cog Loaded.")
+					Terminal.display(f"\"%yellow%{name}%r%\" Cog Loaded.")
 				except Exception as error:
 					self.UNLOADED_EXTENSIONS.append(name)
-					Terminal.error(f"An error occurred while loading \"{Terminal.colour(255, 255, 0)}{name}%r%\" cog.")
+					Terminal.error(f"An error occurred while loading \"%yellow%{name}%r%\" cog.")
 					print(error)
 
 		self.loop.create_task(sync_slash_commands(self))
@@ -54,7 +54,7 @@ async def main():
 	try:
 		initialise_env()
 		Terminal.display("Initialised enviroment variables.")
-		Terminal.display(f"Loaded \"{Terminal.colour(255, 255, 0)}{__filename__}%r%\"")
+		Terminal.display(f"Loaded code from \"%yellow%{__filename__}%r%\" file.")
 		await bot.start(get_env("TOKEN"))
 	except Exception as error:
 		Terminal.error(str(error))

@@ -13,4 +13,4 @@ def initialise_env() -> None:
 	return None
 
 def get_env(constant: str) -> Any:
-	os.getenv(constant)
+	return os.getenv(constant)
