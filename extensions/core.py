@@ -27,7 +27,7 @@ class Core(Cog):
 		try:
 			await self.bot.load_extension(f"extensions.{extension}")
 			Terminal.display(f"Extension \"%yellow%{extension}%r%\" Loaded.")
-			self.bot.LOADED_EXTENSIONS.append(extension)
+			(extension)
 			self.bot.UNLOADED_EXTENSIONS.remove(extension)
 			await interaction.response.send_message(
 				f":white_check_mark: Loaded Extension `extensions.{extension}`",

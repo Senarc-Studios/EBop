@@ -23,16 +23,24 @@ class Extensions:
 			)
 		
 		elif isinstance(extension, str):
-			extensions.update(
-				{
-					"EXTENSIONS": extensions.get("EXTENSIONS").append(extension)
-				}
-			)
+			if extension not in extensions.get("EXTENSIONS"):
+				extensions.update(
+					{
+						"EXTENSIONS": extensions.get("EXTENSIONS").append(extension)
+					}
+				)
 
 		return None
 
 	def register_loaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
+			for extension_ in extension:
+				if extension_ in extensions.get("UNLOADED_EXTENSIONS"):
+					extensions.update(
+						{
+							"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").remove(extension_)
+						}
+					)
 			extensions.update(
 				{
 					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").extend(extension)
@@ -40,6 +48,12 @@ class Extensions:
 			)
 
 		elif isinstance(extension, str):
+			if extension in extensions.get("UNLOADED_EXTENSIONS"):
+				extensions.update(
+					{
+						"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").remove(extension_)
+					}
+				)
 			extensions.update(
 				{
 					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").append(extension)
@@ -50,6 +64,13 @@ class Extensions:
 
 	def register_unloaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
+			for extension_ in extension:
+				if extension_ in extensions.get("LOADED_EXTENSIONS"):
+					extensions.update(
+						{
+							"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").remove(extension_)
+						}
+					)
 			extensions.update(
 				{
 					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").extend(extension)
@@ -57,6 +78,12 @@ class Extensions:
 			)
 
 		elif isinstance(extension, str):
+			if extension in extensions.get("LOADED_EXTENSIONS"):
+				extensions.update(
+					{
+						"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").remove(extension_)
+					}
+				)
 			extensions.update(
 				{
 					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").append(extension)
