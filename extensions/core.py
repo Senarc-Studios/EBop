@@ -1,6 +1,6 @@
 from cool_utils import Terminal
 
-from discord import app_command, Object
+from discord import app_commands, Object
 
 from discord.ext.commands import Bot
 from discord.ext.commands import Cog
@@ -13,10 +13,13 @@ class Core(Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@app_command(
+	@app_commands.command(
 		name = "load",
+		description = "Loads an extension.",
 		guild = CORE_GUILD
 	)
+	@app_commands.describe(extension="Cog extension that needs to be loaded.")
+	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def load(self, interaction, extension: str):
 		user = User(interaction.author.id)
 		if not user.is_owner:
@@ -40,10 +43,13 @@ class Core(Cog):
 				ephemeral=True
 			)
 
-	@app_command(
+	@app_commands.command(
 		name = "unload",
+		description = "Unloads an extension.",
 		guild = CORE_GUILD
 	)
+	@app_commands.describe(extension="Cog extension that needs to be unloaded.")
+	@app_commands.autocomplete(extension=Extensions.get_unloaded_extensions)
 	async def unload(self, interaction, extension: str):
 		user = User(interaction.auther.id)
 		if not user.is_owner:
@@ -67,10 +73,13 @@ class Core(Cog):
 				ephemeral=True
 			)
 
-	@app_command(
+	@app_commands.command(
 		name = "reload",
+		description = "Reloads an extension.",
 		guild = CORE_GUILD
 	)
+	@app_commands.describe(extension="Cog extension that needs to be reloaded.")
+	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def reload(self, interaction, extension: str):
 		user = User(interaction.auther.id)
 		if not user.is_owner:
