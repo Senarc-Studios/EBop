@@ -47,7 +47,7 @@ class EBop(Bot):
 
 intents = Intents.all()
 intents.members = True
-bot = EBop(prefix="eb!", case_insensitive=True, application_id=get_env("APPLICATION_ID"))
+bot = EBop(command_prefix="eb!", case_insensitive=True, intents=intents, application_id=get_env("APPLICATION_ID"))
 
 async def main():
 	__filename__ = Path(__file__).name
@@ -57,7 +57,7 @@ async def main():
 		Terminal.display(f"Loaded \"{Terminal.colour(255, 255, 0)}{__filename__}%r%\"")
 		await bot.start(get_env("TOKEN"))
 	except Exception as error:
-		Terminal.error(error)
+		Terminal.error(str(error))
 
 if __name__ == "__main__":
 	asyncio.run(main())
