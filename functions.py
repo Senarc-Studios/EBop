@@ -30,15 +30,17 @@ class Extensions:
 		if isinstance(extension, list):
 			extensions.update(
 				{
-					"EXTENSIONS": extensions.get("EXTENSIONS").extend(extension)
+					"EXTENSIONS": extensions["EXTENSIONS"].extend(extension)
 				}
 			)
 		
 		elif isinstance(extension, str):
-			if extension not in extensions.get("EXTENSIONS"):
+			if not extension in extensions["EXTENSIONS"]:
+				print(extension)
+				print(extensions["EXTENSIONS"])
 				extensions.update(
 					{
-						"EXTENSIONS": extensions.get("EXTENSIONS").append(extension)
+						"EXTENSIONS": extensions["EXTENSIONS"].append(extension)
 					}
 				)
 
@@ -47,28 +49,28 @@ class Extensions:
 	def register_loaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
 			for extension_ in extension:
-				if extension_ in extensions.get("UNLOADED_EXTENSIONS"):
+				if extension_ in extensions["UNLOADED_EXTENSIONS"]:
 					extensions.update(
 						{
-							"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").remove(extension_)
+							"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].remove(extension_)
 						}
 					)
 			extensions.update(
 				{
-					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").extend(extension)
+					"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].extend(extension)
 				}
 			)
 
 		elif isinstance(extension, str):
-			if extension in extensions.get("UNLOADED_EXTENSIONS"):
+			if extension in extensions["UNLOADED_EXTENSIONS"]:
 				extensions.update(
 					{
-						"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").remove(extension_)
+						"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].remove(extension_)
 					}
 				)
 			extensions.update(
 				{
-					"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").append(extension)
+					"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].append(extension)
 				}
 			)
 
@@ -77,47 +79,47 @@ class Extensions:
 	def register_unloaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
 			for extension_ in extension:
-				if extension_ in extensions.get("LOADED_EXTENSIONS"):
+				if extension_ in extensions["LOADED_EXTENSIONS"]:
 					extensions.update(
 						{
-							"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").remove(extension_)
+							"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].remove(extension_)
 						}
 					)
 			extensions.update(
 				{
-					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").extend(extension)
+					"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].extend(extension)
 				}
 			)
 
 		elif isinstance(extension, str):
-			if extension in extensions.get("LOADED_EXTENSIONS"):
+			if extension in extensions["LOADED_EXTENSIONS"]:
 				extensions.update(
 					{
-						"LOADED_EXTENSIONS": extensions.get("LOADED_EXTENSIONS").remove(extension_)
+						"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].remove(extension_)
 					}
 				)
 			extensions.update(
 				{
-					"UNLOADED_EXTENSIONS": extensions.get("UNLOADED_EXTENSIONS").append(extension)
+					"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].append(extension)
 				}
 			)
 
 		return None
 
 	async def get_unloaded_extensions(interaction, current: str) -> list:
-		if extensions.get("UNLOADED_EXTENSIONS") == []:
+		if extensions["UNLOADED_EXTENSIONS"] == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
 			Choice(name=extension, value=extension)
-			for extension in extensions.get("UNLOADED_EXTENSIONS") if current.lower() in extensions.lower()
+			for extension in extensions["UNLOADED_EXTENSIONS"] if current.lower() in extensions.lower()
 		]
 
 	async def get_loaded_extensions(interaction, current: str) -> list:
-		if extensions.get("LOADED_EXTENSIONS") == []:
+		if extensions["LOADED_EXTENSIONS"] == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
 			Choice(name=extension, value=extension)
-			for extension in extensions.get("LOADED_EXTENSIONS") if current.lower() in extensions.lower()
+			for extension in extensions["LOADED_EXTENSIONS"] if current.lower() in extensions.lower()
 		]
 
 async def sync_slash_commands(self) -> None:
