@@ -4,7 +4,7 @@ from typing import Any
 from cool_utils import Terminal
 from dotenv import find_dotenv, load_dotenv
 
-async def sync_slash_commands(self):
+async def sync_slash_commands(self) -> None:
 	await self.tree.sync()
 	Terminal.display("Application synced successfully.")
 

@@ -49,10 +49,6 @@ intents = Intents.all()
 intents.members = True
 bot = EBop(prefix="eb!", case_insensitive=True, application_id=get_env("APPLICATION_ID"))
 
-@bot.listen("on_ready")
-async def startup():
-	Terminal.display(f"EBop logged in as \"{bot.user.name}\"")
-
 async def main():
 	__filename__ = Path(__file__).name
 	try:
