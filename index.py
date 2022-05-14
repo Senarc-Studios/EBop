@@ -6,7 +6,7 @@ from discord.commands import AutoSharededBot
 
 from cool_utils import GlobalJSON, Terminal
 
-from .functions import get_env, sync_slash_commands
+from .functions import get_env, sync_slash_commands, initialise_env
 
 Terminal.start_log()
 
@@ -21,6 +21,8 @@ class EBop(AutoSharededBot):
 		self.UNLOADED_EXTENSIONS = []
 
 	async def start(self, *args, **kwargs):
+		initialise_env()
+		Terminal.display("Initialised enviroment variables.")
 		Terminal.display("Loaded all resources, Attempting to start bot.")
 		await super().start(*args, **kwargs)
 
