@@ -2,16 +2,16 @@ import os
 import asyncio
 
 from discord import Intents
-from discord.ext.commands import AutoSharededBot
+from discord.ext.commands import Bot
 
 from pathlib import Path
-from cool_utils import GlobalJSON, Terminal
+from cool_utils import Terminal
 
-from .functions import get_env, sync_slash_commands, initialise_env
+from functions import get_env, sync_slash_commands, initialise_env
 
 Terminal.start_log()
 
-class EBop(AutoSharededBot):
+class EBop(Bot):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.CORE_GUILD = get_env("CORE_GUILD")
