@@ -7,11 +7,9 @@ from typing import Any, Union
 from cool_utils import Terminal
 from dotenv import find_dotenv, load_dotenv
 
-extensions = {
-	"EXTENSIONS": [],
-	"LOADED_EXTENSIONS": [],
-	"UNLOADED_EXTENSIONS": []
-}
+EXTENSIONS = []
+LOADED_EXTENSIONS = []
+UNLOADED_EXTENSIONS = []
 
 class User:
 	def __init__(self, discord_id: int):
@@ -28,98 +26,55 @@ class User:
 class Extensions:
 	def register_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
-			extensions.update(
-				{
-					"EXTENSIONS": extensions["EXTENSIONS"].extend(extension)
-				}
-			)
+			EXTENSIONS.extend(extension)
 		
 		elif isinstance(extension, str):
-			if not extension in extensions["EXTENSIONS"]:
-				print(extension)
-				print(extensions["EXTENSIONS"])
-				extensions.update(
-					{
-						"EXTENSIONS": extensions["EXTENSIONS"].append(extension)
-					}
-				)
+			EXTENSIONS.append(extension)
 
 		return None
 
 	def register_loaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
 			for extension_ in extension:
-				if extension_ in extensions["UNLOADED_EXTENSIONS"]:
-					extensions.update(
-						{
-							"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].remove(extension_)
-						}
-					)
-			extensions.update(
-				{
-					"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].extend(extension)
-				}
-			)
+				if extension_ in UNLOADED_EXTENSIONS:
+					UNLOADED_EXTENSIONS.remove(extension_)
+			LOADED_EXTENSIONS.extend(extension)
 
 		elif isinstance(extension, str):
-			if extension in extensions["UNLOADED_EXTENSIONS"]:
-				extensions.update(
-					{
-						"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].remove(extension_)
-					}
-				)
-			extensions.update(
-				{
-					"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].append(extension)
-				}
-			)
+			if extension in UNLOADED_EXTENSIONS:
+				UNLOADED_EXTENSIONS.remove(extension)
+			LOADED_EXTENSIONS.append(extension)
 
 		return None
 
 	def register_unloaded_extension(extension: Union[list, str]) -> None:
 		if isinstance(extension, list):
 			for extension_ in extension:
-				if extension_ in extensions["LOADED_EXTENSIONS"]:
-					extensions.update(
-						{
-							"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].remove(extension_)
-						}
-					)
-			extensions.update(
-				{
-					"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].extend(extension)
-				}
-			)
+				if extension_ in LOADED_EXTENSIONS:
+					LOADED_EXTENSIONS.remove(extension_)
+			UNLOADED_EXTENSIONS.extend(extension)
 
 		elif isinstance(extension, str):
-			if extension in extensions["LOADED_EXTENSIONS"]:
-				extensions.update(
-					{
-						"LOADED_EXTENSIONS": extensions["LOADED_EXTENSIONS"].remove(extension_)
-					}
-				)
-			extensions.update(
-				{
-					"UNLOADED_EXTENSIONS": extensions["UNLOADED_EXTENSIONS"].append(extension)
-				}
-			)
+			if extension in LOADED_EXTENSIONS:
+				LOADED_EXTENSIONS.remove(extension)
+			UNLOADED_EXTENSIONS.append(extension)
 
 		return None
 
 	async def get_unloaded_extensions(interaction, current: str) -> list:
-		if extensions["UNLOADED_EXTENSIONS"] == []:
+		if UNLOADED_EXTENSIONS == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
 			Choice(name=extension, value=extension)
-			for extension in extensions["UNLOADED_EXTENSIONS"] if current.lower() in extensions.lower()
+			for extension in UNLOADED_EXTENSIONS if current.lower() in extension.lower()
 		]
 
 	async def get_loaded_extensions(interaction, current: str) -> list:
-		if extensions["LOADED_EXTENSIONS"] == []:
+		if LOADED_EXTENSIONS == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
 			Choice(name=extension, value=extension)
-			for extension in extensions["LOADED_EXTENSIONS"] if current.lower() in extensions.lower()
+			for extension in LOADED_EXTENSIONS if current.lower() in extension.lower()
 		]
 
 async def sync_slash_commands(self) -> None:
