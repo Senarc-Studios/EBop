@@ -79,13 +79,14 @@ class Extensions:
 
 async def sync_slash_commands(self) -> None:
 	await self.tree.sync()
+	await self.tree.sync(guild=self.CORE_GUILD)
 	Terminal.display("Application synced successfully.")
 
 def display_error(error: Exception) -> None:
 	Terminal.error("---------------------------------------")
 	Terminal.error("Displaying error traceback:")
 	Terminal.error("---------------------------------------")
-	Terminal.error(f"{type(error), error, error.__traceback__}")
+	traceback.print_exception(type(error), error, error.__traceback__)
 	Terminal.error("---------------------------------------")
 
 def initialise_env() -> None:

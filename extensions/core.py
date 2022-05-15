@@ -19,7 +19,7 @@ class Core(Cog):
 	)
 	@app_commands.guilds(CORE_GUILD)
 	@app_commands.describe(extension="Cog extension that needs to be loaded.")
-	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
+	@app_commands.autocomplete(extension=Extensions.get_unloaded_extensions)
 	async def load(self, interaction, extension: str):
 		user = User(interaction.author.id)
 		if not user.is_owner:
@@ -49,9 +49,9 @@ class Core(Cog):
 	)
 	@app_commands.guilds(CORE_GUILD)
 	@app_commands.describe(extension="Cog extension that needs to be unloaded.")
-	@app_commands.autocomplete(extension=Extensions.get_unloaded_extensions)
+	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def unload(self, interaction, extension: str):
-		user = User(interaction.auther.id)
+		user = User(interaction.author.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
 				":warning: It seems like you're not authorised to use this command.",
@@ -81,7 +81,7 @@ class Core(Cog):
 	@app_commands.describe(extension="Cog extension that needs to be reloaded.")
 	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def reload(self, interaction, extension: str):
-		user = User(interaction.auther.id)
+		user = User(interaction.author.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
 				":warning: It seems like you're not authorised to use this command.",
