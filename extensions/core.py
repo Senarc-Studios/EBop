@@ -15,9 +15,9 @@ class Core(Cog):
 
 	@app_commands.command(
 		name = "load",
-		description = "Loads an extension.",
-		guild = CORE_GUILD
+		description = "Loads an extension."
 	)
+	@app_commands.guilds(CORE_GUILD)
 	@app_commands.describe(extension="Cog extension that needs to be loaded.")
 	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def load(self, interaction, extension: str):
@@ -45,9 +45,9 @@ class Core(Cog):
 
 	@app_commands.command(
 		name = "unload",
-		description = "Unloads an extension.",
-		guild = CORE_GUILD
+		description = "Unloads an extension."
 	)
+	@app_commands.guilds(CORE_GUILD)
 	@app_commands.describe(extension="Cog extension that needs to be unloaded.")
 	@app_commands.autocomplete(extension=Extensions.get_unloaded_extensions)
 	async def unload(self, interaction, extension: str):
@@ -75,9 +75,9 @@ class Core(Cog):
 
 	@app_commands.command(
 		name = "reload",
-		description = "Reloads an extension.",
-		guild = CORE_GUILD
+		description = "Reloads an extension."
 	)
+	@app_commands.guilds(CORE_GUILD)
 	@app_commands.describe(extension="Cog extension that needs to be reloaded.")
 	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def reload(self, interaction, extension: str):

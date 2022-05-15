@@ -61,7 +61,7 @@ class Extensions:
 
 		return None
 
-	async def get_unloaded_extensions(interaction, current: str) -> list:
+	async def get_unloaded_extensions(self, interaction, current: str) -> list:
 		if UNLOADED_EXTENSIONS == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
@@ -69,7 +69,7 @@ class Extensions:
 			for extension in UNLOADED_EXTENSIONS if current.lower() in extension.lower()
 		]
 
-	async def get_loaded_extensions(interaction, current: str) -> list:
+	async def get_loaded_extensions(self, interaction, current: str) -> list:
 		if LOADED_EXTENSIONS == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
 		return [
