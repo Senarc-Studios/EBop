@@ -21,7 +21,7 @@ class Core(Cog):
 	@app_commands.describe(extension="Cog extension that needs to be loaded.")
 	@app_commands.autocomplete(extension=Extensions.get_unloaded_extensions)
 	async def load(self, interaction, extension: str):
-		user = User(interaction.author.id)
+		user = User(interaction.user.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
 				":warning: It seems like you're not authorised to use this command.",
@@ -51,10 +51,15 @@ class Core(Cog):
 	@app_commands.describe(extension="Cog extension that needs to be unloaded.")
 	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def unload(self, interaction, extension: str):
-		user = User(interaction.author.id)
+		user = User(interaction.user.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
 				":warning: It seems like you're not authorised to use this command.",
+				ephemeral=True
+			)
+		if extension == "core":
+			return await interaction.response.send_message(
+				":warning: You cannot unload the core extension, this will break the bot.",
 				ephemeral=True
 			)
 		try:
@@ -62,7 +67,7 @@ class Core(Cog):
 			Terminal.display(f"Extension \"%yellow%{extension}.py%r%\" Unloaded.")
 			Extensions.register_unloaded_extension(extension)
 			await interaction.response.send_message(
-				f":white_check_mark: Loaded Extension `extensions.{extension}`",
+				f":white_check_mark: Unloaded Extension `extensions.{extension}`",
 				ephemeral=True
 			)
 		except Exception as error:
@@ -81,7 +86,7 @@ class Core(Cog):
 	@app_commands.describe(extension="Cog extension that needs to be reloaded.")
 	@app_commands.autocomplete(extension=Extensions.get_loaded_extensions)
 	async def reload(self, interaction, extension: str):
-		user = User(interaction.author.id)
+		user = User(interaction.user.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
 				":warning: It seems like you're not authorised to use this command.",
