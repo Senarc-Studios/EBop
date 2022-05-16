@@ -17,6 +17,8 @@ from functions import (
 	Extensions
 )
 
+__filename__ = Path(__file__).name
+
 Terminal.start_log()
 initialise_env()
 Terminal.display("Initialised enviroment variables.")
@@ -25,6 +27,7 @@ class EBop(Bot):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.CORE_GUILD = Object(id = get_env("CORE_GUILD"))
+		self.MAIN_FILENAME = __filename__
 		
 		for file_ in os.listdir("./extensions"):
 			Extensions.register_extension(file_[:-3])
@@ -36,6 +39,10 @@ class EBop(Bot):
 	async def close(self):
 		Terminal.display("Gracefully Exiting Bot...")
 		Terminal.stop_log()
+		await super().close()
+
+	async def reboot(self):
+		os.system(f"python3 ./{__filename__}")
 		await super().close()
 
 	async def setup_hook(self):
@@ -58,7 +65,6 @@ intents.members = True
 bot = EBop(command_prefix="eb!", case_insensitive=True, intents=intents, application_id=get_env("APPLICATION_ID"))
 
 async def main():
-	__filename__ = Path(__file__).name
 	try:
 		Terminal.display(f"Loaded code from \"%yellow%{__filename__}%r%\" file.")
 		await bot.start(get_env("TOKEN"))
