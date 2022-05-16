@@ -38,11 +38,16 @@ class Extensions:
 			for extension_ in extension:
 				if extension_ in UNLOADED_EXTENSIONS:
 					UNLOADED_EXTENSIONS.remove(extension_)
+
+				if extension_ in LOADED_EXTENSIONS:
+					extension.remove(extension_)
 			LOADED_EXTENSIONS.extend(extension)
 
 		elif isinstance(extension, str):
 			if extension in UNLOADED_EXTENSIONS:
 				UNLOADED_EXTENSIONS.remove(extension)
+			if extension in LOADED_EXTENSIONS:
+				return
 			LOADED_EXTENSIONS.append(extension)
 
 		return None
@@ -52,11 +57,16 @@ class Extensions:
 			for extension_ in extension:
 				if extension_ in LOADED_EXTENSIONS:
 					LOADED_EXTENSIONS.remove(extension_)
+
+				if extension_ in UNLOADED_EXTENSIONS:
+					extension.remove(extension_)
 			UNLOADED_EXTENSIONS.extend(extension)
 
 		elif isinstance(extension, str):
 			if extension in LOADED_EXTENSIONS:
 				LOADED_EXTENSIONS.remove(extension)
+			if extension in UNLOADED_EXTENSIONS:
+				return
 			UNLOADED_EXTENSIONS.append(extension)
 
 		return None
