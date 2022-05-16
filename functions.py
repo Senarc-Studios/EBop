@@ -64,6 +64,12 @@ class Extensions:
 	async def get_unloaded_extensions(self, interaction, current: str) -> list:
 		if UNLOADED_EXTENSIONS == []:
 			return [Choice(name="No Extensions", value="No Extensions")]
+		for filename in os.listdir("./extensions"):
+			if filename.endswith(".py"):
+				name = filename[:-3]
+				if name not in LOADED_EXTENSIONS:
+					UNLOADED_EXTENSIONS.append(name)
+					EXTENSIONS.append(name)
 		return [
 			Choice(name=extension, value=extension)
 			for extension in UNLOADED_EXTENSIONS if current.lower() in extension.lower()
