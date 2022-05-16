@@ -1,4 +1,7 @@
+import os
+
 from cool_utils import Terminal
+from pathlib import Path
 
 from discord import app_commands, Object
 
@@ -108,6 +111,22 @@ class Core(Cog):
 				f":fire: An error occured while reloading \"{extension}\" Extension:\n```py\n{error.__traceback__}\n```",
 				ephemeral=True
 			)
+
+	@app_commands.command(
+		name = "reboot",
+		description = "Reboots the bot."
+	)
+	@app_commands.guilds(CORE_GUILD)
+	async def reboot(self, interaction):
+		user = User(interaction.user.id)
+		if not user.is_owner:
+			return await interaction.response.send_message(
+				":warning: It seems like you're not authorised to use this command.",
+				ephemeral=True
+			)
+		Terminal.display(":white_check_mark: Rebooting the bot.")
+		await interaction.response.send_message(":white_check_mark: Rebooting the bot.", ephemeral=True)
+		await self.bot.reboot()
 
 async def setup(bot):
 	await bot.add_cog(Core(bot))
