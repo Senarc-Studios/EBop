@@ -3,6 +3,8 @@ from typing import Literal
 from smtplib import SMTP_SSL
 from cool_utils import Terminal
 
+from motor.motor_asyncio import AsyncIOMotorClient
+
 from discord import app_commands, Object
 
 from discord.ext.commands import Bot
@@ -23,20 +25,55 @@ def check_known(email: str) -> bool:
 class Email(Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.MONGO = get_env("MONGO")
+		cluster = AsyncIOMotorClient(self.MONGO)
+		self.collection = cluster["ebop"]["users"]
 		
 	@app_commands.command(
 		name = "login",
 		description = "Login with your email service."
 	)
+	@app_commands.describe(name = "A name to differentiate this email from other emails.")
 	@app_commands.describe(service = "The email service provider you use. (Or you can use a protocal)")
 	@app_commands.describe(email = "Your email address.")
 	@app_commands.describe(password = "Your email password or your email's app password.")
-	async def login(self, interaction, service: EMAIL_PROVIDERS_AND_PROTOCALS, email: str, password: str):
+	async def login(self, interaction, name: str, service: EMAIL_PROVIDERS_AND_PROTOCALS, email: str, password: str):
 		
 		try:
 			server = SMTP_SSL(f"{PROVIDER_DOMAIN[service]}", 465)
 			server.ehlo()
 			server.login(email, password)
+			if await self.collection.count_documents({"_id": interaction.user.id}) == 0:
+				await self.collection.insert_one(
+					{
+						"_id": interaction.user.id,
+						"accounts": {
+							email: {
+								"name": name,
+								"email": email,
+								"password": password
+							}
+						}
+					}
+				)
+			else:
+				await self.collection.update_one(
+					{
+						"_id": interaction.user.id
+					},
+					{
+						"$addToSet": {
+							"accounts": {
+								email: {
+									"name": name,
+									"email": email,
+									"password": password
+								}
+							}
+						}
+					}
+				)
+
 			success = True
 
 		except:
