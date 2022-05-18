@@ -83,18 +83,18 @@ class Email(Cog):
 			if check_known(email) and not success:
 				await interaction.response.send_message(
 					f":no_entry_sign: Your {service} credentials seems to be invalid.",
-					ephemeral=True
+					ephemeral = True
 				)
 			elif not check_known(email) and success:
 				await interaction.response.send_message(
 					f":no_entry_sign: Your email address seems to be invalid.",
-					ephemeral=True
+					ephemeral = True
 				)
 
 			else:
 				await interaction.response.send_message(
 					f"You're logged in and have your email linked to your account.",
-					ephemeral=True
+					ephemeral = True
 				)
 
 async def setup(bot):
