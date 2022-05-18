@@ -145,8 +145,12 @@ class Core(Cog):
 			)
 		if extension is None:
 			extensions = Extensions.get_extensions_()
-			extensions_list = [f":white_check_mark: `{key}`\n" for key, value in extensions if value["active"]]
-			extensions_list += [f":fire: `{key}`\n" for key, value in extensions if not value["active"]]
+			extensions_list = []
+			for extension, data in extensions:
+				if data["active"]:
+					extensions_list.append(f":white_check_mark: `{extension}`\n")
+				else:
+					extensions_list.append(f":fire: `{extension}`\n")
 			extension_string = "".join(extensions_list)
 			embed = Embed(
 				description = extension_string,
