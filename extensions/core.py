@@ -172,7 +172,7 @@ class Core(Cog):
 				)
 			else:
 				embed = Embed(
-					description = f"{''.join([f'**{key}:** `{value}`\n' for key, value in extension_status.items()])}"
+					description = f"{''.join([f'**{key}:** `{value}`\n' for key, value in extension_status.items()])}",
 					colour = 0xFFFF00
 				)
 				embed.set_author(
