@@ -145,12 +145,8 @@ class Core(Cog):
 			)
 		if extension is None:
 			extensions = Extensions.get_extensions_()
-			extensions_list = []
-			for extension, data in extensions:
-				if data["active"]:
-					extensions_list.append(f":white_check_mark: `{extension}`\n")
-				else:
-					extensions_list.append(f":fire: `{extension}`\n")
+			extensions_list = [f":white_check_mark: `{key}`\n" for key, value in extensions.items() if value["active"]]
+			extensions_list += [f":fire: `{key}`\n" for key, value in extensions.items() if not value["active"]]
 			extension_string = "".join(extensions_list)
 			embed = Embed(
 				description = extension_string,
@@ -158,10 +154,10 @@ class Core(Cog):
 			)
 			embed.set_author(
 				name = "Extensions",
-				icon_url = self.bot.user.avatar_url
+				icon_url = self.bot.user.avatar.url
 			)
 			embed.set_footer(
-				text = f"{len(extensions)} extensions loaded.",
+				text = f"{len(extensions)} extensions found.",
 			)
 			await interaction.response.send_message(
 				embed = embed,
