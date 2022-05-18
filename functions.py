@@ -93,6 +93,37 @@ class Extensions:
 			for extension in LOADED_EXTENSIONS if current.lower() in extension.lower()
 		]
 
+	async def get_extensions(self, interaction, current: str) -> list:
+		if EXTENSIONS == []:
+			return [Choice(name="No Extensions", value="No Extensions")]
+		return [
+			Choice(name=extension, value=extension)
+			for extension in EXTENSIONS if current.lower() in extension.lower()
+		]
+
+	def get_extensions_(extension: str = None) -> dict:
+		if extension is None:
+			if EXTENSIONS == []:
+				return [Choice(name="No Extensions", value="No Extensions")]
+			_ext = {}
+			for extension in LOADED_EXTENSIONS:
+				_ext.update(
+					{
+						extension: {
+							"active": True,
+						}
+					}
+				)
+			for extension in UNLOADED_EXTENSIONS:
+				_ext.update(
+					{
+						extension: {
+							"active": False,
+						}
+					}
+				)
+			return _ext
+
 async def sync_slash_commands(self) -> None:
 	await self.tree.sync()
 	await self.tree.sync(guild=self.CORE_GUILD)

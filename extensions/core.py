@@ -130,13 +130,13 @@ class Core(Cog):
 		await self.bot.reboot()
 
 	@app_commands.command(
-		name = "extension list",
+		name = "extensions",
 		description = "View information or status about extensions."
 	)
 	@app_commands.describe(extension = "Extension in EBop")
 	@app_commands.guilds(CORE_GUILD)
 	@app_commands.autocomplete(extension=Extensions.get_extensions)
-	async def extension_list(self, interaction, extension: str = None):
+	async def extensions(self, interaction, extension: str = None):
 		user = User(interaction.user.id)
 		if not user.is_owner:
 			return await interaction.response.send_message(
@@ -145,8 +145,8 @@ class Core(Cog):
 			)
 		if extension is None:
 			extensions = Extensions.get_extensions_()
-			extensions_list = [f":white_check_mark: `{extension}`\n" for extension in extensions if extension["active"]]
-			extensions_list += [f":fire: `{extension}`\n" for extension in extensions if not extension["active"]]
+			extensions_list = [f":white_check_mark: `{value['name']}`\n" for key, value in extensions if extension["active"]]
+			extensions_list += [f":fire: `{value['name']}`\n" for key, value in extensions if not extension["active"]]
 			extension_string = "".join(extensions_list)
 			embed = Embed(
 				description = extension_string,
@@ -172,7 +172,7 @@ class Core(Cog):
 				)
 			else:
 				embed = Embed(
-					description = f"{''.join([f'**{key}:** `{value}`\n' for key, value in extension_status.items()])}",
+					description = ''.join([f'**{key}:** `{value}`\n' for key, value in extension_status.items()]),
 					colour = 0xFFFF00
 				)
 				embed.set_author(
