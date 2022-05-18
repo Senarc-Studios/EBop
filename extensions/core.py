@@ -135,7 +135,7 @@ class Core(Cog):
 	)
 	@app_commands.describe(extension = "Extension in EBop")
 	@app_commands.guilds(CORE_GUILD)
-	@app_commands.autocomplete(extension=Extensions.get_extensions)
+	@app_commands.autocomplete(extension = Extensions.get_extensions)
 	async def extensions(self, interaction, extension: str = None):
 		user = User(interaction.user.id)
 		if not user.is_owner:
@@ -145,8 +145,8 @@ class Core(Cog):
 			)
 		if extension is None:
 			extensions = Extensions.get_extensions_()
-			extensions_list = [f":white_check_mark: `{value['name']}`\n" for key, value in extensions if extension["active"]]
-			extensions_list += [f":fire: `{value['name']}`\n" for key, value in extensions if not extension["active"]]
+			extensions_list = [f":white_check_mark: `{key}`\n" for key, value in extensions if value["active"]]
+			extensions_list += [f":fire: `{key}`\n" for key, value in extensions if not value["active"]]
 			extension_string = "".join(extensions_list)
 			embed = Embed(
 				description = extension_string,
