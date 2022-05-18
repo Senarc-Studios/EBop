@@ -124,6 +124,21 @@ class Extensions:
 				)
 			return _ext
 
+		else:
+			if extension in EXTENSIONS:
+				if extension in LOADED_EXTENSIONS:
+					return {
+						"name": extension,
+						"active": True,
+					}
+				else:
+					return {
+						"name": extension,
+						"active": False,
+					}
+			else:
+				return None
+
 async def sync_slash_commands(self) -> None:
 	await self.tree.sync()
 	await self.tree.sync(guild=self.CORE_GUILD)

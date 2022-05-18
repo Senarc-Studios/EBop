@@ -1,5 +1,6 @@
 import os
 
+from typing import Union
 from pathlib import Path
 from typing import Literal
 from cool_utils import Terminal
@@ -164,10 +165,10 @@ class Core(Cog):
 				ephemeral = True
 			)
 		else:
-			extension_status = Extensions.get_extension_(extension)
+			extension_status = Extensions.get_extensions_(extension)
 			if extension_status is None:
 				await interaction.response.send_message(
-					f":warning: Extension \"{extension}\" not found.",
+					f":warning: Extension \"`{extension}`\" not found.",
 					ephemeral = True
 				)
 			else:
@@ -177,7 +178,7 @@ class Core(Cog):
 				)
 				embed.set_author(
 					name = f"Extension: {extension}",
-					icon_url = self.bot.user.avatar_url
+					icon_url = self.bot.user.avatar.url
 				)
 				await interaction.response.send_message(
 					embed = embed,
