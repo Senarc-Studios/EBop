@@ -1,7 +1,5 @@
 import os
-import sys
 import asyncio
-import traceback
 
 from discord import Intents, Object
 from discord.ext.commands import Bot
